@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESC}}">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#EFEBE3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{--paper:#EFEBE3;--card:#F7F4EE;--ink:#15171A;--muted:#5E5C57;--rule:#D6D0C3;--hl:#FFD43B;--pen:#C8232B;--code:#E7E1D4;
+--f-display:"Fraunces",Georgia,"Times New Roman",serif;--f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#16171A;--card:#1E2024;--ink:#ECE8DF;--muted:#A39F96;--rule:#33353A;--pen:#FF6B6B;--code:#26282D;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body)}
+.wrap{max-width:720px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+.mast{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px double var(--ink);padding-bottom:10px}
+.logo{font:700 18px var(--f-mono);color:var(--ink);text-decoration:none}
+.logo b{display:inline-block;width:14px;height:4px;background:var(--hl);margin-left:2px}
+.mast .sub{font:500 12px var(--f-mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+h1{font:800 clamp(30px,7vw,48px)/1.08 var(--f-display);margin:26px 0 12px;text-wrap:balance}
+h1 mark{background:linear-gradient(transparent 18%,var(--hl) 18%,var(--hl) 88%,transparent 88%);color:#15171A;padding:0 .12em}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 22px}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.row{display:grid;grid-template-columns:auto auto 1fr;gap:4px 12px;align-items:baseline;background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:14px 16px;color:var(--ink);text-decoration:none}
+.row:hover,.row:focus-visible{border-color:var(--ink);outline:none}
+.row .t{grid-column:1/-1;font:800 19px/1.3 var(--f-display);text-wrap:balance}
+.date{font:500 12px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.kw{font:700 11px var(--f-mono);letter-spacing:.08em;background:var(--hl);color:#15171A;padding:2px 7px;border-radius:2px}
+.kw.alt{background:transparent;color:var(--pen);border:1.5px solid var(--pen)}
+.back{display:inline-block;margin-top:18px;font:700 13px var(--f-mono);color:var(--ink)}
+.meta{display:flex;gap:10px;align-items:baseline;margin:22px 0 0}
+article h1{margin-top:8px}
+.body h2{font:800 20px/1.3 var(--f-display);margin:26px 0 6px}
+.body p,.body li{max-width:65ch}
+.body ul,.body ol{padding-left:22px}
+.body a{color:var(--ink);text-decoration-color:var(--pen);text-decoration-thickness:2px;text-underline-offset:3px;overflow-wrap:anywhere}
+.code{position:relative;margin:10px 0}
+.code pre{background:var(--code);border-radius:4px;padding:14px 14px 46px;overflow-x:auto;margin:0}
+.code code{font:500 14px/1.5 var(--f-mono);white-space:pre-wrap}
+.copy{position:absolute;right:8px;bottom:8px;font:700 12px var(--f-mono);border:1.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:3px;padding:4px 10px;cursor:pointer}
+table{border-collapse:collapse;display:block;overflow-x:auto}td,th{border:1px solid var(--rule);padding:6px 10px}
+.foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:500 13px var(--f-mono);color:var(--muted)}
+.foot a{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast"><a class="logo" href="/">s<b></b> siber.py</a><span class="sub">Kaynak dosyası</span></header>
+{{BODY}}
+<p class="foot">Linkler yalnızca resmî adreslere gider. Yeni bölümler için Instagram'da <a href="https://www.instagram.com/siber.py/" target="_blank" rel="noopener">@siber.py</a>.</p>
+</div>
+<script>
+document.querySelectorAll(".copy").forEach(function(b){b.addEventListener("click",function(){var c=b.parentNode.querySelector("code");var done=function(){b.textContent="Kopyalandı";setTimeout(function(){b.textContent="Kopyala"},1500)};try{navigator.clipboard.writeText(c.innerText).then(done,function(){sel(c,b)})}catch(e){sel(c,b)}})});
+function sel(c,b){var r=document.createRange();r.selectNodeContents(c);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Seçildi"}
+</script>
+</body>
+</html>
