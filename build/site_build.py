@@ -1,6 +1,6 @@
 """siberpy.github.io statik site üreticisi. Kaynak: kaynaklar/*.md (depoda). Çıktı: <out>/index.html + <out>/<anchor>/index.html
 Kullanım: python3 build_site.py <kaynaklar_klasörü> <çıktı_klasörü>"""
-import sys, re, glob, os, html, markdown, shutil
+import sys, re, glob, os, html, markdown, shutil, subprocess
 KW = {"yol": "YOL", "prompt": "PROMPT", "hazine": "HAZİNE", "liste": "LİSTE", "cevap": "CEVAP", "repo": "REPO"}
 src, out = sys.argv[1], sys.argv[2]
 tpl = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "site_sablon.html"), encoding="utf-8").read()
@@ -14,7 +14,21 @@ def page(title, desc, body, path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w", encoding="utf-8").write(p)
 
-files = sorted([f for f in glob.glob(os.path.join(src, "*.md")) if not f.endswith("README.md")], reverse=True)
+def commit_ts(f):
+    """Dosyanın siberpy-medya deposundaki son commit zamanı (unix). Bulunamazsa 0."""
+    try:
+        r = subprocess.run(["git", "-C", os.path.dirname(os.path.abspath(f)), "log", "-1", "--format=%ct", "--", os.path.basename(f)],
+                           capture_output=True, text=True, timeout=30)
+        return int(r.stdout.strip() or 0)
+    except Exception:
+        return 0
+
+def tr_upper(s):
+    return s.replace("i", "İ").replace("ı", "I").upper()
+
+# Sıra: önce dosya adındaki tarih, aynı tarihte son commit zamanı (en yeni üstte)
+files = [f for f in glob.glob(os.path.join(src, "*.md")) if not f.endswith("README.md")]
+files = sorted(files, key=lambda f: (os.path.basename(f)[:10], commit_ts(f), os.path.basename(f)), reverse=True)
 items, seen = [], set()
 for f in files:
     base = os.path.basename(f)[:-3]
@@ -35,7 +49,7 @@ for f in files:
     hb = markdown.markdown("\n".join(lines[1:]), extensions=["fenced_code", "tables", "sane_lists"])
     hb = linkify(hb)
     hb = re.sub(r"<pre><code>(.*?)</code></pre>", lambda mm: '<div class="code"><pre><code>' + mm.group(1) + '</code></pre><button class="copy" type="button">Kopyala</button></div>', hb, flags=re.S)
-    tag = f'<span class="kw">{kw}</span>' if kw else '<span class="kw alt">UYARI</span>'
+    tag = f'<span class="kw">{html.escape(kw or tr_upper(key))}</span>'
     first_p = re.sub("<[^>]+>", "", (re.search(r"<p>(.*?)</p>", hb, re.S) or re.search(r"<li>(.*?)</li>", hb, re.S)).group(1))[:150]
     art = f'''<a class="back" href="/">← Tüm dosyalar</a>
 <article><p class="meta"><span class="date">{d}.{m}.{y}</span>{tag}</p><h1>{html.escape(title)}</h1><div class="body">{hb}</div></article>'''
