@@ -21,6 +21,7 @@ jobs:
         with:
           repository: darkeyes41/siberpy-medya
           path: medya
+          fetch-depth: 0
           sparse-checkout: kaynaklar
       - uses: actions/setup-python@v5
         with:
