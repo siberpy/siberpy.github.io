@@ -48,3 +48,14 @@ idx = f'''<h1>Videodaki <mark>linkler</mark> burada.</h1>
 page("siber.py Kaynaklar", "Yapay zeka, yazılım ve siber güvenlik: @siber.py Reel'lerindeki kaynaklar, komutlar ve resmî linkler.", idx, os.path.join(out, "index.html"))
 open(os.path.join(out, ".nojekyll"), "w").close()
 print("ok", len(items))
+
+# /son/ -> en yeni bölümün sayfası (sitedeki listenin en üstü). ManyChat'teki genel yorum/DM otomasyonu bu adresi kullanır;
+# yeni kelimeli bir Reel'in kaynak dosyası eklenince link kendiliğinden o sayfaya gider.
+m_son = re.search(r'href="/([^"]+)/"', items[0]) if items else None
+son_url = f"/{m_son.group(1)}/" if m_son else "/"
+os.makedirs(os.path.join(out, "son"), exist_ok=True)
+open(os.path.join(out, "son", "index.html"), "w", encoding="utf-8").write(
+    f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+    f'<title>siber.py · en yeni bölüm</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={son_url}">'
+    f'</head><body><p><a href="{son_url}">En yeni bölüme git</a></p><script>location.replace("{son_url}")</script></body></html>')
+print("son ->", son_url)
